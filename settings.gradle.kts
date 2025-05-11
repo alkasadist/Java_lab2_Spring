@@ -1,0 +1,1 @@
+rootProject.name = "Java_lab_2"
