@@ -40,3 +40,8 @@ bin/
 
 # Logs
 *.log
+
+
+#extra
+LW2.docx
+.~LW2.docx

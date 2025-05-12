@@ -1,40 +1,26 @@
 package phone;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
+@Scope("singleton")
 public class PhoneCallMediator {
-    private static PhoneCallMediator instance;
     private final Map<String, PhoneProxy> phones = new HashMap<>();
-
-    private PhoneCallMediator() {}
-
-    public static PhoneCallMediator getInstance() {
-        if (instance == null) {
-            instance = new PhoneCallMediator();
-        }
-        return instance;
-    }
 
     public void registerPhone(PhoneProxy phone) {
         phones.put(phone.getNumber(), phone);
     }
 
-    public boolean makeCall(String fromNumber, String toNumber) {
-        if (phones.get(toNumber) == null) {
-            System.out.println("MEDIATOR ERROR: phone number " + toNumber + " not found.");
-            return false;
-        }
+    public PhoneProxy getPhone(String number) {
+        return phones.get(number);
+    }
 
+    public boolean makeCall(String fromNumber, String toNumber) {
         PhoneProxy fromPhone = phones.get(fromNumber);
         PhoneProxy toPhone = phones.get(toNumber);
-
-        if (toPhone.getState() == State.IN_CALL ||
-            toPhone.getState() == State.CALLING ||
-            toPhone.getState() == State.RINGING) {
-            System.out.println("MEDIATOR ERROR: phone number " + toNumber + " is busy, call again later.");
-            return false;
-        }
 
         fromPhone.decreaseBalance(50);
         fromPhone.setState(State.CALLING);
