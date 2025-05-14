@@ -46,7 +46,12 @@ public class PhoneCallMediator {
         Phone callee = phones.get(caller.getConnectedPhoneNumber());
 
         caller.setConnectedPhoneNumber(null);
-        caller.setState(State.WAITING);
+        if (caller.getBalance() <= 0) {
+            caller.setState(State.BLOCKED);
+        } else {
+            caller.setState(State.WAITING);
+        }
+
         callee.setConnectedPhoneNumber(null);
         callee.setState(State.WAITING);
 

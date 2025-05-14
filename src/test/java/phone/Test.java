@@ -5,8 +5,8 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class Test {
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(PhoneAppConfig.class);
-        PhoneCallMediator mediator = context.getBean(PhoneCallMediator.class);
+        PhoneFactory factory = context.getBean(PhoneFactory.class);
 
-        Tests.RunTests(mediator);
+        Tests.RunTests(factory);
     }
 }

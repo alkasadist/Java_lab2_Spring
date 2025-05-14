@@ -1,37 +1,37 @@
 package phone;
 
 public class Tests {
-    static void RunTests(PhoneCallMediator mediator) {
-        NumberNotFoundTest(mediator);
-        AlreadyCallingSomeoneTest(mediator);
-        SelfCallTest(mediator);
-        BlockedPhoneTest(mediator);
-        AlreadyCallingTest(mediator);
-        NoActiveCallTest(mediator);
-        NoCallDropTest(mediator);
+    static void RunTests(PhoneFactory factory) {
+        NumberNotFoundTest(factory);
+        AlreadyCallingSomeoneTest(factory);
+        SelfCallTest(factory);
+        BlockedPhoneTest(factory);
+        AlreadyCallingTest(factory);
+        NoActiveCallTest(factory);
+        NoCallDropTest(factory);
     }
 
     static void showTestResult(boolean result) {
         System.out.println(!result ? "✅ SUCCESS ✅" : "❌ FAIL ❌");
     }
 
-    static void NumberNotFoundTest(PhoneCallMediator mediator) {
+    static void NumberNotFoundTest(PhoneFactory factory) {
         System.out.println("\nNumberNotFoundTest:");
 
-        PhoneProxy phone = new PhoneProxy("111", mediator);
+        Phone phone = factory.getPhone("111");
         phone.replenishBalance(50);
         boolean result = phone.call("47348237948");
 
         showTestResult(result);
     }
 
-    static void AlreadyCallingSomeoneTest(PhoneCallMediator mediator) {
+    static void AlreadyCallingSomeoneTest(PhoneFactory factory) {
         System.out.println("\nAlreadyCallingSomeoneTest:");
 
-        PhoneProxy phone1 = new PhoneProxy("0", mediator);
+        Phone phone1 = factory.getPhone("0");
         phone1.replenishBalance(100);
-        PhoneProxy phone2 = new PhoneProxy("1", mediator);
-        PhoneProxy phone3 = new PhoneProxy("2", mediator);
+        Phone phone2 = factory.getPhone("1");
+        Phone phone3 = factory.getPhone("2");
 
         phone1.call("1");
         boolean result = phone1.call("2");
@@ -39,37 +39,37 @@ public class Tests {
         showTestResult(result);
     }
 
-    static void SelfCallTest(PhoneCallMediator mediator) {
+    static void SelfCallTest(PhoneFactory factory) {
         System.out.println("\nSelfCallTest:");
 
-        PhoneProxy phone = new PhoneProxy("111", mediator);
+        Phone phone = factory.getPhone("111");
         phone.replenishBalance(100);
         boolean result = phone.call("111");
 
         showTestResult(result);
     }
 
-    static void BlockedPhoneTest(PhoneCallMediator mediator) {
+    static void BlockedPhoneTest(PhoneFactory factory) {
         System.out.println("\nBlockedPhoneTest:");
 
-        PhoneProxy phoneLowBalance = new PhoneProxy.Builder("222", mediator)
-                .setBalance(10)
-                .build();
+        Phone phoneLowBalance = factory.getPhone("222");
+        phoneLowBalance.replenishBalance(10);
+        // you are allowed to call if you don't have enough balance, you just go into debt
+        phoneLowBalance.call("111");
+        phoneLowBalance.drop();
         boolean result = phoneLowBalance.call("111");
 
         showTestResult(result);
     }
 
-    static void AlreadyCallingTest(PhoneCallMediator mediator) {
+    static void AlreadyCallingTest(PhoneFactory factory) {
         System.out.println("\nAlreadyCallingTest:");
 
-        PhoneProxy phone1 = new PhoneProxy.Builder("333", mediator)
-                .setBalance(100)
-                .build();
-        PhoneProxy phone2 = new PhoneProxy.Builder("444", mediator)
-                .setBalance(100)
-                .build();
-        PhoneProxy phone3 = new PhoneProxy("555", mediator);
+        Phone phone1 = factory.getPhone("333");
+        phone1.replenishBalance(100);
+        Phone phone2 = factory.getPhone("444");
+        phone2.replenishBalance(100);
+        Phone phone3 = factory.getPhone("555");
 
         phone1.call("555");
         boolean result = phone2.call("555");
@@ -77,19 +77,19 @@ public class Tests {
         showTestResult(result);
     }
 
-    static void NoActiveCallTest(PhoneCallMediator mediator) {
+    static void NoActiveCallTest(PhoneFactory factory) {
         System.out.println("\nNoActiveCallTest:");
 
-        PhoneProxy phone = new PhoneProxy("666", mediator);
+        Phone phone = factory.getPhone("666");
         boolean result = phone.answer();
 
         showTestResult(result);
     }
 
-    static void NoCallDropTest(PhoneCallMediator mediator) {
+    static void NoCallDropTest(PhoneFactory factory) {
         System.out.println("\nNoCallDropTest:");
 
-        PhoneProxy phone = new PhoneProxy("777", mediator);
+        Phone phone = factory.getPhone("777");
         boolean result = phone.drop();
 
         showTestResult(result);

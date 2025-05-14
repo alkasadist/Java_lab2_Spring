@@ -12,7 +12,6 @@ import phone.State;
 @Aspect
 @Component
 public class PhoneValidationAspects {
-
     @Around("execution(* phone.Phone.call(String))")
     public Object validateCall(ProceedingJoinPoint joinPoint) throws Throwable {
         String toNumber = (String) joinPoint.getArgs()[0];
@@ -25,12 +24,16 @@ public class PhoneValidationAspects {
             System.out.println("ERROR: phone number " + toNumber + " not found.");
             return false;
         }
-        if (fromPhone.getState() == State.CALLING) {
-            System.out.println("ERROR: You are already calling someone.");
+        if (fromPhone.getState() == State.BLOCKED) {
+            System.out.println("ERROR: You are blocked: your balance is " + fromPhone.getBalance());
             return false;
         }
-        if (fromPhone.getBalance() <= 0) {
-            System.out.println("ERROR: Insufficient balance.");
+        if (toPhone.getNumber().equals(fromPhone.getNumber())) {
+            System.out.println("ERROR: You cannot call yourself.");
+            return false;
+        }
+        if (fromPhone.getState() == State.CALLING) {
+            System.out.println("ERROR: You are already calling someone.");
             return false;
         }
 
