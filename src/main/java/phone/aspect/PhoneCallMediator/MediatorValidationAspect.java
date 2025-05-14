@@ -11,7 +11,7 @@ import phone.State;
 
 @Aspect
 @Component
-public class MediatorMakeCallValidationAspect {
+public class MediatorValidationAspect {
 
     @Around(
             value = "execution(* phone.PhoneCallMediator.makeCall(..)) && args(fromNumber, toNumber)",
