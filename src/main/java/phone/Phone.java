@@ -52,6 +52,10 @@ public class Phone implements PhoneInterface {
         this.balance -= amount;
     }
 
+    //public boolean call(String toNumber)
+    //public boolean answer()
+    //public boolean drop()
+
     @Override
     public String toString() {
         return "PHONE: [ " +
