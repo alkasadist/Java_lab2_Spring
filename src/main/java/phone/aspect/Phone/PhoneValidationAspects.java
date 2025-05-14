@@ -11,7 +11,7 @@ import phone.State;
 
 @Aspect
 @Component
-public class PhoneValidationAspect {
+public class PhoneValidationAspects {
 
     @Around("execution(* phone.Phone.call(String))")
     public Object validateCall(ProceedingJoinPoint joinPoint) throws Throwable {
