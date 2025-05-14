@@ -4,8 +4,8 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
+import phone.Phone;
 import phone.PhoneCallMediator;
-import phone.PhoneProxy;
 import phone.SpringContext;
 import phone.State;
 
@@ -20,7 +20,7 @@ public class MediatorMakeCallValidationAspect {
     public Object validateMakeCall(ProceedingJoinPoint joinPoint, String fromNumber, String toNumber) throws Throwable {
         PhoneCallMediator mediator = SpringContext.getBean(PhoneCallMediator.class);
 
-        PhoneProxy toPhone = mediator.getPhone(toNumber);
+        Phone toPhone = mediator.getPhone(toNumber);
         if (toPhone == null) {
             System.out.println("MEDIATOR ERROR: phone number " + toNumber + " not found.");
             return false;

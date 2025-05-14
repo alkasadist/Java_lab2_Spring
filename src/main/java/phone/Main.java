@@ -5,17 +5,16 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class Main {
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(PhoneAppConfig.class);
-        PhoneCallMediator mediator = context.getBean(PhoneCallMediator.class);
+        PhoneFactory factory = context.getBean(PhoneFactory.class);
 
-        PhoneProxy phone1 = new PhoneProxy.Builder("1000", mediator)
-                .setBalance(100)
-                .build();
-        PhoneProxy phone2 = new PhoneProxy("2000", mediator);
+        Phone phone1 = factory.getPhone("1000");
+        Phone phone2 = factory.getPhone("2000");
+
+        phone1.replenishBalance(100);
+        phone2.replenishBalance(100);
 
         System.out.println(phone1);
         System.out.println(phone2);
-
-        phone2.replenishBalance(100);
 
         phone1.call("2000");
         System.out.println(phone1);

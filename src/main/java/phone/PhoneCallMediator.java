@@ -8,19 +8,19 @@ import java.util.Map;
 @Component
 @Scope("singleton")
 public class PhoneCallMediator {
-    private final Map<String, PhoneProxy> phones = new HashMap<>();
+    private final Map<String, Phone> phones = new HashMap<>();
 
-    public void registerPhone(PhoneProxy phone) {
+    public void registerPhone(Phone phone) {
         phones.put(phone.getNumber(), phone);
     }
 
-    public PhoneProxy getPhone(String number) {
+    public Phone getPhone(String number) {
         return phones.get(number);
     }
 
     public boolean makeCall(String fromNumber, String toNumber) {
-        PhoneProxy fromPhone = phones.get(fromNumber);
-        PhoneProxy toPhone = phones.get(toNumber);
+        Phone fromPhone = phones.get(fromNumber);
+        Phone toPhone = phones.get(toNumber);
 
         fromPhone.decreaseBalance(50);
         fromPhone.setState(State.CALLING);
@@ -32,8 +32,8 @@ public class PhoneCallMediator {
         return true;
     }
 
-    public boolean answerCall(PhoneProxy caller) {
-        PhoneProxy callee = phones.get(caller.getConnectedPhoneNumber());
+    public boolean answerCall(Phone caller) {
+        Phone callee = phones.get(caller.getConnectedPhoneNumber());
 
         caller.setState(State.IN_CALL);
         callee.setState(State.IN_CALL);
@@ -42,8 +42,8 @@ public class PhoneCallMediator {
         return true;
     }
 
-    public boolean dropCall(PhoneProxy caller) {
-        PhoneProxy callee = phones.get(caller.getConnectedPhoneNumber());
+    public boolean dropCall(Phone caller) {
+        Phone callee = phones.get(caller.getConnectedPhoneNumber());
 
         caller.setConnectedPhoneNumber(null);
         caller.setState(State.WAITING);

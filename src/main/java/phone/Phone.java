@@ -1,33 +1,44 @@
 package phone;
 
-import java.util.Map;
-import java.util.HashMap;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
-public class Phone implements PhoneInterface {
-    private static final Map<String, Phone> instances = new HashMap<>();
+@Component
+@Scope("prototype")
+public class Phone {
+    private final PhoneCallMediator mediator;
 
-    private final String number;
+    private String number;
     private int balance = 0;
     private State state = State.WAITING;
-    private String connectedPhoneNumber = null;
+    private String connectedPhoneNumber;
 
-    private Phone(String number) { this.number = number; }
-
-    public static Phone getInstance(String number) {
-        if (!instances.containsKey(number)) {
-            instances.put(number, new Phone(number));
-        }
-        return instances.get(number);
+    @Autowired
+    public Phone(PhoneCallMediator mediator) {
+        this.mediator = mediator;
     }
 
-    @Override
-    public String getNumber() { return number; }
+    public void setNumber(String number) {
+        this.number = number;
+        mediator.registerPhone(this);
+    }
 
-    @Override
-    public int getBalance() { return balance; }
+    public String getNumber() {
+        return number;
+    }
 
-    @Override
-    public State getState() { return state; }
+    public int getBalance() {
+        return balance;
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
 
     public String getConnectedPhoneNumber() {
         return connectedPhoneNumber;
@@ -37,24 +48,25 @@ public class Phone implements PhoneInterface {
         this.connectedPhoneNumber = connectedPhoneNumber;
     }
 
-    @Override
-    public void setState(State state) {
-        this.state = state;
-    }
-
-    @Override
     public void replenishBalance(int amount) {
         this.balance += amount;
     }
 
-    @Override
     public void decreaseBalance(int amount) {
         this.balance -= amount;
     }
 
-    //public boolean call(String toNumber)
-    //public boolean answer()
-    //public boolean drop()
+    public boolean call(String toNumber) {
+        return mediator.makeCall(this.getNumber(), toNumber);
+    }
+
+    public boolean answer() {
+        return mediator.answerCall(this);
+    }
+
+    public boolean drop() {
+        return mediator.dropCall(this);
+    }
 
     @Override
     public String toString() {
