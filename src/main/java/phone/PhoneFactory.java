@@ -3,13 +3,13 @@ package phone;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.HashMap;
 
 @Component
 @Scope("singleton")
 public class PhoneFactory {
     private final ObjectFactory<Phone> phoneFactory;
-    private final ConcurrentHashMap<String, Phone> phones = new ConcurrentHashMap<>();
+    private final HashMap<String, Phone> phones = new HashMap<>();
 
     public PhoneFactory(ObjectFactory<Phone> phoneFactory) {
         this.phoneFactory = phoneFactory;
