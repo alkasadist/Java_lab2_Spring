@@ -31,4 +31,3 @@ Spring Bean (синглтоны и прототипы). Использовать
 ### Были добавлены следующие аспекты:
 - ```PhoneValidationAspects``` - валидирующий аспект класса ```Phone```.
 - ```MediatorValidationAspects``` - валидирующий аспект класса ```PhoneCallMediator```.
-gi
