@@ -53,9 +53,11 @@ public class Tests {
         System.out.println("\nBlockedPhoneTest:");
 
         Phone phoneLowBalance = factory.getPhone("222");
-        phoneLowBalance.replenishBalance(10);
+        Phone phoneCallee = factory.getPhone("111");
+
         // you are allowed to call if you don't have enough balance, you just go into debt
         phoneLowBalance.call("111");
+        phoneCallee.answer();
         phoneLowBalance.drop();
         boolean result = phoneLowBalance.call("111");
 

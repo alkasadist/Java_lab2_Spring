@@ -50,6 +50,10 @@ public class Phone {
 
     public void replenishBalance(int amount) {
         this.balance += amount;
+
+        if (this.balance >= 0 && this.state == State.BLOCKED) {
+            this.state = State.WAITING;
+        }
     }
 
     public void decreaseBalance(int amount) {
